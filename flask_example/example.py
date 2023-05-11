@@ -21,9 +21,9 @@ def hello_world():
     return 'Hello Hexlet!'
 
 
-@app.route('/json/')
-def json():
-    return {'json': 42} # Возвращает тип application/json
+# @app.route('/json/')
+# def json():
+#     return {'json': 42} # Возвращает тип application/json
 
 
 @app.errorhandler(404)
@@ -83,7 +83,7 @@ def users_post():
     ID += 1
     user = request.form.to_dict()
     user['id'] = ID
-    with open('user.json') as f:
+    with open('user.json', 'w') as f:
         f.write(json.dumps(user))
     return render_template('/users', code=302)
 
