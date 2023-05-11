@@ -1,0 +1,50 @@
+<form action="/users" method="post">
+    <div>
+        <label>
+            Имя
+            <input type="text" name="name" value="{{ user.name }}">
+        </label>
+        {% if errors['name'] }
+            <div>{{ errors['name'] }}</div>
+        {% endif %}
+    </div>
+    <div>
+        <label>
+            Email
+            <input type="email" required name="email" value="{{ user.email }}">
+        </label>
+        {% if errors['email'] %}
+            <div>{{ errors['email'] }}</div>
+        {% endif %}
+    </div>
+    <div>
+        <label>
+            Пароль
+            <input type="password" required name="password" value="{{ user.password }}">
+        </label>
+        {% if errors['password'] %}
+            <div>{{ errors['password'] }}</div>
+        {% endif %}
+    </div>
+    <div>
+        <label>
+            Подтверждение пароля
+            <input type="password" required name="passwordConfirmation" value="{{ user.passwordConfirmation }}">
+        </label>
+    </div>
+    <div>
+        <label>
+            Город
+            <select name="city">
+                <option value="">Select</option>
+                <option {{ 'selected' if city == 3 else '' }} value="3">Москва</option>
+                <option {{ 'selected' if city == 13 else '' }} value="13">Пенза</option>
+                <option {{ 'selected' if city == 399 else '' }} value="399">Томск</option>
+            </select>
+        </label>
+        {% if errors['city'] %}
+            <div>{{ errors['city'] }}</div>
+        {% endif %}
+    </div>
+    <input type="submit" value="Sign up">
+</form>
