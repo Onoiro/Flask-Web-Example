@@ -7,12 +7,12 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
-users = [{'first_name': 'mike', 'tel': '89036259090'},
-         {'first_name': 'mishel', 'tel': '89036665555'},
-         {'first_name': 'adel', 'tel': '89036201111'},
-         {'first_name': 'keks', 'tel': '89152224444'},
-         {'first_name': 'kamila', 'tel': '8902553333'}
-    ]
+# users = [{'first_name': 'mike', 'tel': '89036259090'},
+#          {'first_name': 'mishel', 'tel': '89036665555'},
+#          {'first_name': 'adel', 'tel': '89036201111'},
+#          {'first_name': 'keks', 'tel': '89152224444'},
+#          {'first_name': 'kamila', 'tel': '8902553333'}
+#     ]
 
 ID = 0
 
@@ -62,6 +62,9 @@ def get_user(id):
 def search_user():
     term = request.args.get('term', '', type=str)
     #users = load_users()
+    filename = '/home/abo/hexlet-flask-example/flask_example/flask_example/templates/users/users.json'
+    with open(filename) as f:
+        users = json.loads(f.read())
     filtered_users = []
     for user in users:
         pattern = user['first_name']
