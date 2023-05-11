@@ -14,7 +14,7 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 #          {'first_name': 'kamila', 'tel': '8902553333'}
 #     ]
 
-ID = 0
+# ID = 0
 
 @app.route('/')
 def hello_world():
@@ -79,13 +79,17 @@ def search_user():
 
 @app.post('/users/')
 def users_post():
-    global ID
-    ID += 1
+    # global ID
+    # ID += 1
+    filename = '/home/abo/hexlet-flask-example/flask_example/flask_example/templates/users/users.json'
+    with open(filename) as f:
+        users = json.loads(f.read())
     user = request.form.to_dict()
-    user['id'] = ID
-    with open('user.json', 'w') as f:
-        f.write(json.dumps(user))
-    return render_template('/users', code=302)
+    user['id'] = str((int(users[-1]['id']) + 1))
+    users.append(user)
+    with open('/home/abo/hexlet-flask-example/flask_example/flask_example/templates/users/users.json', 'w') as f:
+        f.write(json.dumps(users)) 
+    return render_template('index.html', code=302)
 
 
 @app.route('/users/new_user')
