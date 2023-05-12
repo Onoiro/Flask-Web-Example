@@ -1,4 +1,5 @@
-from flask import Flask, request, make_response, render_template, redirect, url_for
+from flask import Flask, request, make_response, render_template, \
+                  redirect, url_for, flash, get_flashed_messages
 #from data import UserRepository
 import os
 import json
@@ -6,6 +7,8 @@ import json
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
+app.secret_key = "secret_key"
 
 # users = [{'first_name': 'mike', 'tel': '89036259090'},
 #          {'first_name': 'mishel', 'tel': '89036665555'},
@@ -59,6 +62,7 @@ def load_users():
 @app.route('/users/')
 def search_user():
     term = request.args.get('term', '', type=str)
+    messages = get_flashed_messages(with_categories=True)
     users = load_users()
     filtered_users = []
     for user in users:
@@ -67,6 +71,7 @@ def search_user():
             filtered_users.append(user)
     return render_template(
         'index.html',
+        messages=messages,
         users=filtered_users,
         search=term
     )
@@ -78,6 +83,7 @@ def users_post():
     user = request.form.to_dict()
     user['id'] = str((int(users[-1]['id']) + 1))
     users.append(user)
+    flash('User was added successfully', 'Message')
     with open('flask_example/templates/users/users.json', 'w') as f:
         f.write(json.dumps(users)) 
     return redirect(
