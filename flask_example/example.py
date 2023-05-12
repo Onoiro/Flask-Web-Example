@@ -51,8 +51,7 @@ def get_user(id):
 
 def load_users():
     #filename = 'users.json'
-    filename = '/home/abo/hexlet-flask-example/flask_example/flask_example/templates/users/users.json'
-    with open(filename) as f:
+    with open('flask_example/templates/users/users.json') as f:
         users = json.loads(f.read())
     return users
 
@@ -79,7 +78,7 @@ def users_post():
     user = request.form.to_dict()
     user['id'] = str((int(users[-1]['id']) + 1))
     users.append(user)
-    with open('/home/abo/hexlet-flask-example/flask_example/flask_example/templates/users/users.json', 'w') as f:
+    with open('flask_example/templates/users/users.json', 'w') as f:
         f.write(json.dumps(users)) 
     return render_template('index.html', code=302)
 
