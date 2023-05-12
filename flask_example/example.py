@@ -80,7 +80,11 @@ def users_post():
     users.append(user)
     with open('flask_example/templates/users/users.json', 'w') as f:
         f.write(json.dumps(users)) 
-    return render_template('index.html', code=302)
+    return render_template(
+        'index.html',
+        users=users,
+        code=302
+    )
 
 
 @app.route('/users/new_user')
