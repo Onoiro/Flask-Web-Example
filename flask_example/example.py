@@ -1,4 +1,4 @@
-from flask import Flask, request, make_response, render_template
+from flask import Flask, request, make_response, render_template, redirect, url_for
 #from data import UserRepository
 import os
 import json
@@ -80,9 +80,8 @@ def users_post():
     users.append(user)
     with open('flask_example/templates/users/users.json', 'w') as f:
         f.write(json.dumps(users)) 
-    return render_template(
-        'index.html',
-        users=users,
+    return redirect(
+        url_for('search_user'),
         code=302
     )
 
