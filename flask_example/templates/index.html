@@ -9,11 +9,11 @@
         <input type="submit" value="Search" />
     </form>
     {% if messages %}
-      <ul class=flashes>
+      <div class=flashes>
       {% for category, message in messages %}
-        <li class="{{ category }}" style="color:green">{{ message }}</li>
+        <p class="{{ category }}" style="color:green">{{ message }}</p>
       {% endfor %}
-      </ul>
+      </div>
 {% endif %}
     <ul>
       {% for user in users %}
