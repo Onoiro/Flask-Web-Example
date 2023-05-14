@@ -14,11 +14,18 @@
         <p class="{{ category }}" style="color:green">{{ message }}</p>
       {% endfor %}
       </div>
-{% endif %}
-    <ul>
+    {% endif %}
+    <table>
       {% for user in users %}
-        <li>{{user}}</li>
+      <tr>
+        <td>
+          {{ user['id']}}
+        </td>
+        <td>
+          <a href="{{ url_for('get_user', id=user['id']) }}">{{ user['first_name'] }}</a>
+        </td>
+      </tr>
       {% endfor %}
-    </ul>
+    </table>
   </body>
 </html>
