@@ -22,7 +22,9 @@
           {{ user['id']}}
         </td>
         <td>
-          <a href="{{ url_for('get_user', id=user['id']) }}">{{ user['first_name'] }}</a>
+          <a href="{{ url_for('get_user', id=user['id']) }}">
+            {{ user['first_name'] }}
+          </a>
         </td>
       </tr>
       {% endfor %}
