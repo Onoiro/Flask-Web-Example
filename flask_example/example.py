@@ -47,13 +47,16 @@ def foo():
     return response
 
 
-@app.route('/users/<id>')
+@app.route('/users/<int:id>')
 def get_user(id):
-    return render_template('users/show.html', name=id)
-
+    users = load_users()
+    for user in users:
+        if user['id'] == str(id):
+            return render_template('/users/show.html', user=user)
+    return 'Page not found', 404
+    
 
 def load_users():
-    #filename = 'users.json'
     with open('flask_example/templates/users/users.json') as f:
         users = json.loads(f.read())
     return users
