@@ -2,5 +2,6 @@
 **/.venv
 **/dist
 .idea/
-users.json
+**/users.json
+
 
