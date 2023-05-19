@@ -62,6 +62,13 @@ def load_users():
     return users
 
 
+def validate(user):
+    errors = []
+    if len(user['first_name']) <= 4:
+        errors.append('Nickname must be greater than 4 characters')
+        return errors
+
+
 @app.route('/users/')
 def search_user():
     term = request.args.get('term', '', type=str)
@@ -84,9 +91,16 @@ def search_user():
 def users_post():
     users = load_users()
     user = request.form.to_dict()
+    errors = validate(user)
+    if errors:
+        return render_template(
+            'users/new_user.html',
+            user=user,
+            errors=errors
+        ), 422
     user['id'] = str((int(users[-1]['id']) + 1))
     users.append(user)
-    flash('User was added successfully', 'Message')
+    flash('User was added successfully', 'success')
     with open('flask_example/templates/users/users.json', 'w') as f:
         f.write(json.dumps(users)) 
     return redirect(
@@ -101,7 +115,9 @@ def users_new():
             'name': '',
             'tel': ''
     }
+    errors = []
     return render_template(
         '/users/new_user.html',
-        user=user
+        user=user,
+        errors=errors
     )
