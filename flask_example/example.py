@@ -91,6 +91,7 @@ def search_user():
 def users_post():
     users = load_users()
     user = request.form.to_dict()
+    print(user)
     errors = validate(user)
     if errors:
         return render_template(
@@ -143,14 +144,15 @@ def patch_user(id):
         if user['id'] == str(id):
             user = user
     data = request.form.to_dict()
-    errors = validate(user)
+    print(data)
+    errors = validate(data)
     if errors:
         return render_template(
             'users/edit.html',
             user=user,
             errors=errors
         ), 422
-    user['first_name'] = data['user']
+    user['first_name'] = data['first_name']
     flash('User was updated successfully', 'success')
     with open('flask_example/templates/users/users.json', 'w') as f:
         f.write(json.dumps(users)) 
