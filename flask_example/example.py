@@ -121,3 +121,40 @@ def users_new():
         user=user,
         errors=errors
     )
+
+
+@app.route('/users/<id>/edit')
+def edit_user(id):
+    users = load_users()
+    for user in users:
+        if user['id'] == str(id):
+            user=user
+    errors = []
+    return render_template(
+        'users/edit.html',
+        user=user,
+        errors=errors
+    )
+
+@app.route('/users/<id>/patch', methods=['POST'])
+def patch_user(id):
+    users = load_users()
+    for user in users:
+        if user['id'] == str(id):
+            user = user
+    data = request.form.to_dict()
+    errors = validate(user)
+    if errors:
+        return render_template(
+            'users/edit.html',
+            user=user,
+            errors=errors
+        ), 422
+    user['first_name'] = data['user']
+    flash('User was updated successfully', 'success')
+    with open('flask_example/templates/users/users.json', 'w') as f:
+        f.write(json.dumps(users)) 
+    return redirect(
+        url_for('search_user'),
+        code=302
+    )
