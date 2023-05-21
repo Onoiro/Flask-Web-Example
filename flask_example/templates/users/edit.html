@@ -4,6 +4,10 @@
             Nickname *
             <input type="text" name="first_name" value="{{ user.first_name }}">
         </label>
+        <label>
+            Tel *
+            <input type="text" name="tel" value="{{ user.tel }}">
+        </label>
         {% if errors %}
             {% for error in errors %}
             <div>{{ error }}</div>

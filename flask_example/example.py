@@ -153,6 +153,7 @@ def patch_user(id):
             errors=errors
         ), 422
     user['first_name'] = data['first_name']
+    user['tel'] = data['tel']
     flash('User was updated successfully', 'success')
     with open('flask_example/templates/users/users.json', 'w') as f:
         f.write(json.dumps(users)) 
