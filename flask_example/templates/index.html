@@ -8,6 +8,9 @@
         <input type="search" name="term" value="{{ search }}" />
         <input type="submit" value="Search" />
     </form>
+    <form action="{{ url_for('users_new') }}">
+      <input type="submit" value="New user"/>
+    </form>
     {% if messages %}
       <div class=flashes>
       {% for category, message in messages %}
