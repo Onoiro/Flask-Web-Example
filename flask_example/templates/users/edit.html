@@ -6,7 +6,7 @@
         </label>
         <label>
             Tel *
-            <input type="text" name="tel" value="{{ user.tel }}">
+            <input type="text" name="tel" value="{{ user.tel }}">   
         </label>
         {% if errors %}
             {% for error in errors %}
@@ -15,4 +15,7 @@
         {% endif %}
     </div>
     <input type="submit" value="Update">
+</form>
+<form action="{{ url_for('delete_user', id=user.id) }}" method="post">
+    <input type="submit" value="Remove">
 </form>

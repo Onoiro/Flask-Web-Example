@@ -161,3 +161,17 @@ def patch_user(id):
         url_for('search_user'),
         code=302
     )
+
+
+@app.route('/users/<id>/delete')
+def delete_user(id):
+    users = load_users()
+    for user in users:
+        if user['id'] == str(id):
+            users.remove(user)
+    flash('User was removed successfully', 'success')
+    with open('flask_example/templates/users/users.json', 'w') as f:
+        f.write(json.dumps(users)) 
+    return redirect(
+        url_for('search_user'),
+        code=302)
