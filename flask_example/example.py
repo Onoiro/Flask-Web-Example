@@ -163,7 +163,7 @@ def patch_user(id):
     )
 
 
-@app.route('/users/<id>/delete')
+@app.route('/users/<id>/delete', methods=['POST'])
 def delete_user(id):
     users = load_users()
     for user in users:
