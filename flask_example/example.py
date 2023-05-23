@@ -1,6 +1,5 @@
 from flask import Flask, request, make_response, render_template, \
                   redirect, url_for, flash, get_flashed_messages
-#from data import UserRepository
 import os
 import json
 
@@ -10,41 +9,15 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 app.secret_key = "secret_key"
 
-# users = [{'first_name': 'mike', 'tel': '89036259090'},
-#          {'first_name': 'mishel', 'tel': '89036665555'},
-#          {'first_name': 'adel', 'tel': '89036201111'},
-#          {'first_name': 'keks', 'tel': '89152224444'},
-#          {'first_name': 'kamila', 'tel': '8902553333'}
-#     ]
-
 
 @app.route('/')
 def hello_world():
     return 'Hello Hexlet!'
 
 
-# @app.route('/json/')
-# def json():
-#     return {'json': 42} # Возвращает тип application/json
-
-
 @app.errorhandler(404)
 def not_found(error):
     return 'Oops!', 404
-
-
-@app.route('/foo')
-def foo():
-    response = make_response('foo')
-    # Устанавливаем заголовок
-    response.headers['X-Parachutes'] = 'parachutes are cool'
-    # Меняем тип ответа
-    response.mimetype = 'text/plain'
-    # Задаем статус
-    response.status_code = 418
-    # Устанавливаем cookie
-    response.set_cookie('foo', 'bar')
-    return response
 
 
 @app.route('/users/<int:id>')
@@ -57,8 +30,7 @@ def get_user(id):
     
 
 def load_users():
-    with open('flask_example/templates/users/users.json') as f:
-        users = json.loads(f.read())
+    users = json.loads(request.cookies.get('users', json.dumps([])))
     return users
 
 
@@ -91,7 +63,6 @@ def search_user():
 def users_post():
     users = load_users()
     user = request.form.to_dict()
-    print(user)
     errors = validate(user)
     if errors:
         return render_template(
@@ -101,13 +72,10 @@ def users_post():
         ), 422
     user['id'] = str((int(users[-1]['id']) + 1))
     users.append(user)
-    flash('User was added successfully', 'success')
-    with open('flask_example/templates/users/users.json', 'w') as f:
-        f.write(json.dumps(users)) 
-    return redirect(
-        url_for('search_user'),
-        code=302
-    )
+    encoded_users = json.dumps(users)
+    response = make_response(redirect(url_for('search_user')))
+    response.set_cookie('users', encoded_users)
+    return response
 
 
 @app.route('/users/new_user')
