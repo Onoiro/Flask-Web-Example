@@ -70,7 +70,10 @@ def users_post():
             user=user,
             errors=errors
         ), 422
-    user['id'] = str((int(users[-1]['id']) + 1))
+    if users:
+        user['id'] = str((int(users[-1]['id']) + 1))
+    else:
+        user['id'] = str(0)
     users.append(user)
     encoded_users = json.dumps(users)
     response = make_response(redirect(url_for('search_user')))
