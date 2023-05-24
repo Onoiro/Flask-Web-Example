@@ -46,10 +46,17 @@ def search_user():
     term = request.args.get('term', '', type=str)
     messages = get_flashed_messages(with_categories=True)
     users = load_users()
+    example_user = {
+        "id": "0",
+        "first_name": "example user",
+        "tel": "89000000000"
+    }
     filtered_users = []
+    if not users:
+        filtered_users.append(example_user)
     for user in users:
         pattern = user['first_name']
-        if term == pattern[:len(term)]:    
+        if term == pattern[:len(term)]:
             filtered_users.append(user)
     return render_template(
         'index.html',
