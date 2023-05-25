@@ -30,12 +30,11 @@ def get_user(id):
     
 
 def load_users():
-    # try:
-    #     users = json.loads(request.cookies.get('users', json.dumps([])))
-    # except:
-    #     with open('flask_example/templates/users/users.json') as f:
-    #         users = json.loads(f.read())
-    users = json.loads(request.cookies.get('users', json.dumps([])))
+    try:
+        users = json.loads(request.cookies.get('users', json.dumps([])))
+    except:
+        with open('flask_example/templates/users/users.json') as f:
+            users = json.loads(f.read())
     return users
 
 
@@ -120,7 +119,6 @@ def patch_user(id):
         if user['id'] == str(id):
             user = user
     data = request.form.to_dict()
-    print(data)
     errors = validate(data)
     if errors:
         return render_template(
@@ -131,12 +129,10 @@ def patch_user(id):
     user['first_name'] = data['first_name']
     user['tel'] = data['tel']
     flash('User was updated successfully', 'success')
-    with open('flask_example/templates/users/users.json', 'w') as f:
-        f.write(json.dumps(users)) 
-    return redirect(
-        url_for('search_user'),
-        code=302
-    )
+    encoded_users = json.dumps(users)
+    response = make_response(redirect(url_for('search_user')))
+    response.set_cookie('users', encoded_users)
+    return response
 
 
 @app.route('/users/<id>/delete', methods=['POST'])
@@ -146,8 +142,7 @@ def delete_user(id):
         if user['id'] == str(id):
             users.remove(user)
     flash('User was removed successfully', 'success')
-    with open('flask_example/templates/users/users.json', 'w') as f:
-        f.write(json.dumps(users)) 
-    return redirect(
-        url_for('search_user'),
-        code=302)
+    encoded_users = json.dumps(users)
+    response = make_response(redirect(url_for('search_user')))
+    response.set_cookie('users', encoded_users)
+    return response
