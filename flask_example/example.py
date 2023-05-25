@@ -30,13 +30,18 @@ def get_user(id):
     
 
 def load_users():
+    # try:
+    #     users = json.loads(request.cookies.get('users', json.dumps([])))
+    # except:
+    #     with open('flask_example/templates/users/users.json') as f:
+    #         users = json.loads(f.read())
     users = json.loads(request.cookies.get('users', json.dumps([])))
     return users
 
 
 def validate(user):
     errors = []
-    if len(user['first_name']) <= 4:
+    if len(user['first_name']) < 4:
         errors.append('Nickname must be greater than 4 characters')
         return errors
 
@@ -46,14 +51,7 @@ def search_user():
     term = request.args.get('term', '', type=str)
     messages = get_flashed_messages(with_categories=True)
     users = load_users()
-    example_user = {
-        "id": "0",
-        "first_name": "example user",
-        "tel": "89000000000"
-    }
     filtered_users = []
-    if not users:
-        filtered_users.append(example_user)
     for user in users:
         pattern = user['first_name']
         if term == pattern[:len(term)]:
