@@ -151,17 +151,17 @@ def delete_user(id):
 @app.route('/login', methods = ['POST', 'GET'])
 def user_login():
     message = ''
+    session_status = 0
     users = load_users()
     tel = request.args.get('tel', '', type=str)
-    # if request.method == 'POST':
     session['users'] = []
     for user in users:
         print(f"{user['tel']} {tel}")
         if str(tel) == user['tel']:
             session['users'].append(user)
+            session_status = 1
+            flash(f"{user['first_name']} is successfully logged in")
             return redirect(url_for('search_user'))
-        else:
-            message = 'wrong tel'
     return render_template(
             'users/login.html',
             users=users,
