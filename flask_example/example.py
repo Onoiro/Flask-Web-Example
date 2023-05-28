@@ -1,5 +1,5 @@
 from flask import Flask, request, make_response, render_template, \
-                  redirect, url_for, flash, get_flashed_messages
+                  redirect, url_for, flash, get_flashed_messages, session
 import os
 import json
 
@@ -146,3 +146,25 @@ def delete_user(id):
     response = make_response(redirect(url_for('search_user')))
     response.set_cookie('users', encoded_users)
     return response
+
+
+@app.route('/login', methods = ['POST', 'GET'])
+def user_login():
+    message = ''
+    users = load_users()
+    tel = request.args.get('tel', '', type=str)
+    # if request.method == 'POST':
+    session['users'] = []
+    for user in users:
+        print(f"{user['tel']} {tel}")
+        if str(tel) == user['tel']:
+            session['users'].append(user)
+            return redirect(url_for('search_user'))
+        else:
+            message = 'wrong tel'
+    return render_template(
+            'users/login.html',
+            users=users,
+            message=message,
+            tel=tel
+            )
