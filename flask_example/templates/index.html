@@ -26,10 +26,10 @@
       {% for user in users %}
       <tr>
         <td>
-          {{ user['id']}}
+          {{ user['id'] }}
         </td>
         <td>
-          <a href="{{ url_for('get_user', id=user['id']) }}">
+          <a href="{{ url_for('get_user', id=user.id) }}">
             {{ user['first_name'] }}
           </a>
         </td>
