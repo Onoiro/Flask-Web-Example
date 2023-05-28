@@ -1,15 +1,9 @@
-<!-- <form action="{{ url_for('user_login') }}"> -->
-<form>
+<form action="{{ url_for('user_login') }}">
     <div>
         <label>
             <h1>Login</h1>
             <input type="tel" name="tel" value="{{ tel }}">
             <input type="submit" value="Login">
         </label>
-    </div>
-    <div>
-        {% if message %}
-        <p>{{ message }}</p>
-        {% endif %}
     </div>
 </form>

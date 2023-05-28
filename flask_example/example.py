@@ -79,6 +79,7 @@ def users_post():
     else:
         user['id'] = str(0)
     users.append(user)
+    flash(f"{user['first_name']} was added successfully", "success")
     encoded_users = json.dumps(users)
     response = make_response(redirect(url_for('search_user')))
     response.set_cookie('users', encoded_users)
@@ -128,7 +129,7 @@ def patch_user(id):
         ), 422
     user['first_name'] = data['first_name']
     user['tel'] = data['tel']
-    flash('User was updated successfully', 'success')
+    flash(f"User {user['first_name']} was updated successfully", "success")
     encoded_users = json.dumps(users)
     response = make_response(redirect(url_for('search_user')))
     response.set_cookie('users', encoded_users)
@@ -150,7 +151,6 @@ def delete_user(id):
 
 @app.route('/login', methods = ['POST', 'GET'])
 def user_login():
-    message = ''
     session_status = 0
     users = load_users()
     tel = request.args.get('tel', '', type=str)
@@ -164,7 +164,5 @@ def user_login():
             return redirect(url_for('search_user'))
     return render_template(
             'users/login.html',
-            users=users,
-            message=message,
             tel=tel
             )
