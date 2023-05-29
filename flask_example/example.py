@@ -103,22 +103,24 @@ def users_new():
 @app.route('/users/<id>/edit')
 def edit_user(id):
     users = load_users()
+    selected_user = {}
     for user in users:
         if user['id'] == str(id):
-            user=user
+            selected_user=user
     errors = []
     return render_template(
         'users/edit.html',
-        user=user,
+        user=selected_user,
         errors=errors
     )
 
-@app.route('/users/<id>/patch', methods=['POST'])
+@app.route('/users/<id>/edit', methods=['POST'])
 def patch_user(id):
     users = load_users()
     for user in users:
         if user['id'] == str(id):
-            user = user
+            user=user
+            break
     data = request.form.to_dict()
     errors = validate(data)
     if errors:
